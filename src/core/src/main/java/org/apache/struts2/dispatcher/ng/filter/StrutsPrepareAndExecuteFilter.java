@@ -40,8 +40,9 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 /**
- * Handles both the preparation and execution phases of the Struts dispatching process.  This filter is better to use
- * when you don't have another filter that needs access to action context information, such as Sitemesh.
+ * Handles both the preparation and execution phases of the Struts dispatching
+ * process. This filter is better to use when you don't have another filter that
+ * needs access to action context information, such as Sitemesh.
  */
 public class StrutsPrepareAndExecuteFilter implements StrutsStatics, Filter {
     protected PrepareOperations prepare;
@@ -51,6 +52,7 @@ public class StrutsPrepareAndExecuteFilter implements StrutsStatics, Filter {
     public void init(FilterConfig filterConfig) throws ServletException {
         InitOperations init = new InitOperations();
         Dispatcher dispatcher = null;
+
         try {
             FilterHostConfig config = new FilterHostConfig(filterConfig);
             init.initLogging(config);
@@ -59,7 +61,7 @@ public class StrutsPrepareAndExecuteFilter implements StrutsStatics, Filter {
 
             prepare = new PrepareOperations(dispatcher);
             execute = new ExecuteOperations(dispatcher);
-            this.excludedPatterns = init.buildExcludedPatternsList(dispatcher);
+            excludedPatterns = init.buildExcludedPatternsList(dispatcher);
 
             postInit(dispatcher, filterConfig);
         } finally {
