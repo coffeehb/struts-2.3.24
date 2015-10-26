@@ -101,29 +101,27 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-
 /**
  * DefaultConfiguration
  *
- * @author Jason Carreira
- *         Created Feb 24, 2003 7:38:06 AM
+ * @author Jason Carreira Created Feb 24, 2003 7:38:06 AM
  */
 public class DefaultConfiguration implements Configuration {
 
     protected static final Logger LOG = LoggerFactory.getLogger(DefaultConfiguration.class);
 
-
     // Programmatic Action Configurations
     protected Map<String, PackageConfig> packageContexts = new LinkedHashMap<String, PackageConfig>();
-    protected RuntimeConfiguration runtimeConfiguration;
-    protected Container container;
-    protected String defaultFrameworkBeanName;
     protected Set<String> loadedFileNames = new TreeSet<String>();
     protected List<UnknownHandlerConfig> unknownHandlerStack;
 
+    protected RuntimeConfiguration runtimeConfiguration;
+    protected Container container;
+    protected String defaultFrameworkBeanName;
 
     ObjectFactory objectFactory;
 
+    // ====================== constructors START =================================
     public DefaultConfiguration() {
         this("xwork");
     }
@@ -131,18 +129,10 @@ public class DefaultConfiguration implements Configuration {
     public DefaultConfiguration(String defaultBeanName) {
         this.defaultFrameworkBeanName = defaultBeanName;
     }
-
+    // ====================== constructors END =================================
 
     public PackageConfig getPackageConfig(String name) {
         return packageContexts.get(name);
-    }
-
-    public List<UnknownHandlerConfig> getUnknownHandlerStack() {
-        return unknownHandlerStack;
-    }
-
-    public void setUnknownHandlerStack(List<UnknownHandlerConfig> unknownHandlerStack) {
-        this.unknownHandlerStack = unknownHandlerStack;
     }
 
     public Set<String> getPackageConfigNames() {
@@ -155,6 +145,14 @@ public class DefaultConfiguration implements Configuration {
 
     public Set<String> getLoadedFileNames() {
         return loadedFileNames;
+    }
+
+    public List<UnknownHandlerConfig> getUnknownHandlerStack() {
+        return unknownHandlerStack;
+    }
+
+    public void setUnknownHandlerStack(List<UnknownHandlerConfig> unknownHandlerStack) {
+        this.unknownHandlerStack = unknownHandlerStack;
     }
 
     public RuntimeConfiguration getRuntimeConfiguration() {
@@ -175,12 +173,12 @@ public class DefaultConfiguration implements Configuration {
                     && check.getLocation().equals(packageContext.getLocation())) {
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("The package name '" + name
-                    + "' is already been loaded by the same location and could be removed: "
-                    + packageContext.getLocation());
+                            + "' is already been loaded by the same location and could be removed: "
+                            + packageContext.getLocation());
                 }
             } else {
                 throw new ConfigurationException("The package name '" + name
-                        + "' at location "+packageContext.getLocation()
+                        + "' at location " + packageContext.getLocation()
                         + " is already been used by another package at location " + check.getLocation(),
                         packageContext);
             }
@@ -205,8 +203,7 @@ public class DefaultConfiguration implements Configuration {
     }
 
     /**
-     * Calls the ConfigurationProviderFactory.getConfig() to tell it to reload the configuration and then calls
-     * buildRuntimeConfiguration().
+     * Calls the ConfigurationProviderFactory.getConfig() to tell it to reload the configuration and then calls buildRuntimeConfiguration().
      *
      * @throws ConfigurationException
      */
@@ -220,8 +217,7 @@ public class DefaultConfiguration implements Configuration {
     }
 
     /**
-     * Calls the ConfigurationProviderFactory.getConfig() to tell it to reload the configuration and then calls
-     * buildRuntimeConfiguration().
+     * Calls the ConfigurationProviderFactory.getConfig() to tell it to reload the configuration and then calls buildRuntimeConfiguration().
      *
      * @throws ConfigurationException
      */
@@ -233,8 +229,8 @@ public class DefaultConfiguration implements Configuration {
         ContainerProperties props = new ContainerProperties();
         ContainerBuilder builder = new ContainerBuilder();
         Container bootstrap = createBootstrapContainer(providers);
-        for (final ContainerProvider containerProvider : providers)
-        {
+
+        for (final ContainerProvider containerProvider : providers) {
             bootstrap.inject(containerProvider);
             containerProvider.init(this);
             containerProvider.register(builder, props);
@@ -247,6 +243,7 @@ public class DefaultConfiguration implements Configuration {
             }
         });
 
+        // shuliang: a ThreadLocal<ActionContext> object
         ActionContext oldContext = ActionContext.getContext();
         try {
             // Set the bootstrap container for the purposes of factory creation
@@ -257,12 +254,11 @@ public class DefaultConfiguration implements Configuration {
             objectFactory = container.getInstance(ObjectFactory.class);
 
             // Process the configuration providers first
-            for (final ContainerProvider containerProvider : providers)
-            {
+            for (final ContainerProvider containerProvider : providers) {
                 if (containerProvider instanceof PackageProvider) {
                     container.inject(containerProvider);
-                    ((PackageProvider)containerProvider).loadPackages();
-                    packageProviders.add((PackageProvider)containerProvider);
+                    ((PackageProvider) containerProvider).loadPackages();
+                    packageProviders.add((PackageProvider) containerProvider);
                 }
             }
 
@@ -297,6 +293,7 @@ public class DefaultConfiguration implements Configuration {
     protected Container createBootstrapContainer(List<ContainerProvider> providers) {
         ContainerBuilder builder = new ContainerBuilder();
         boolean fmFactoryRegistered = false;
+
         for (ContainerProvider provider : providers) {
             if (provider instanceof FileManagerProvider) {
                 provider.register(builder, null);
@@ -306,6 +303,7 @@ public class DefaultConfiguration implements Configuration {
                 fmFactoryRegistered = true;
             }
         }
+
         builder.factory(ObjectFactory.class, Scope.SINGLETON);
         builder.factory(ActionFactory.class, DefaultActionFactory.class, Scope.SINGLETON);
         builder.factory(ResultFactory.class, DefaultResultFactory.class, Scope.SINGLETON);
@@ -318,6 +316,7 @@ public class DefaultConfiguration implements Configuration {
         if (!fmFactoryRegistered) {
             builder.factory(FileManagerFactory.class, DefaultFileManagerFactory.class, Scope.SINGLETON);
         }
+
         builder.factory(ReflectionProvider.class, OgnlReflectionProvider.class, Scope.SINGLETON);
         builder.factory(ValueStackFactory.class, OgnlValueStackFactory.class, Scope.SINGLETON);
 
@@ -329,10 +328,10 @@ public class DefaultConfiguration implements Configuration {
         builder.factory(TypeConverterHolder.class, DefaultTypeConverterHolder.class, Scope.SINGLETON);
 
         builder.factory(XWorkBasicConverter.class, Scope.SINGLETON);
-        builder.factory(TypeConverter.class, XWorkConstants.COLLECTION_CONVERTER,  CollectionConverter.class, Scope.SINGLETON);
+        builder.factory(TypeConverter.class, XWorkConstants.COLLECTION_CONVERTER, CollectionConverter.class, Scope.SINGLETON);
         builder.factory(TypeConverter.class, XWorkConstants.ARRAY_CONVERTER, ArrayConverter.class, Scope.SINGLETON);
         builder.factory(TypeConverter.class, XWorkConstants.DATE_CONVERTER, DateConverter.class, Scope.SINGLETON);
-        builder.factory(TypeConverter.class, XWorkConstants.NUMBER_CONVERTER,  NumberConverter.class, Scope.SINGLETON);
+        builder.factory(TypeConverter.class, XWorkConstants.NUMBER_CONVERTER, NumberConverter.class, Scope.SINGLETON);
         builder.factory(TypeConverter.class, XWorkConstants.STRING_CONVERTER, StringConverter.class, Scope.SINGLETON);
 
         builder.factory(TextParser.class, OgnlTextParser.class, Scope.SINGLETON);
@@ -352,14 +351,13 @@ public class DefaultConfiguration implements Configuration {
     }
 
     /**
-     * This builds the internal runtime configuration used by Xwork for finding and configuring Actions from the
-     * programmatic configuration data structures. All of the old runtime configuration will be discarded and rebuilt.
+     * This builds the internal runtime configuration used by Xwork for finding and configuring Actions from the programmatic configuration data structures. All
+     * of the old runtime configuration will be discarded and rebuilt.
      *
      * <p>
-     * It basically flattens the data structures to make the information easier to access.  It will take
-     * an {@link ActionConfig} and combine its data with all inherited dast.  For example, if the {@link ActionConfig}
-     * is in a package that contains a global result and it also contains a result, the resulting {@link ActionConfig}
-     * will have two results.
+     * It basically flattens the data structures to make the information easier to access. It will take an {@link ActionConfig} and combine its data with all
+     * inherited dast. For example, if the {@link ActionConfig} is in a package that contains a global result and it also contains a result, the resulting
+     * {@link ActionConfig} will have two results.
      */
     protected synchronized RuntimeConfiguration buildRuntimeConfiguration() throws ConfigurationException {
         Map<String, Map<String, ActionConfig>> namespaceActionConfigs = new LinkedHashMap<String, Map<String, ActionConfig>>();
@@ -410,9 +408,10 @@ public class DefaultConfiguration implements Configuration {
     /**
      * Builds the full runtime actionconfig with all of the defaults and inheritance
      *
-     * @param packageContext the PackageConfig which holds the base config we're building from
-     * @param baseConfig     the ActionConfig which holds only the configuration specific to itself, without the defaults
-     *                       and inheritance
+     * @param packageContext
+     *            the PackageConfig which holds the base config we're building from
+     * @param baseConfig
+     *            the ActionConfig which holds only the configuration specific to itself, without the defaults and inheritance
      * @return a full ActionConfig for runtime configuration with all of the inherited and default params
      * @throws com.opensymphony.xwork2.config.ConfigurationException
      *
@@ -427,7 +426,7 @@ public class DefaultConfiguration implements Configuration {
             results.putAll(packageContext.getAllGlobalResults());
         }
 
-       	results.putAll(baseConfig.getResults());
+        results.putAll(baseConfig.getResults());
 
         setDefaultResults(results, packageContext);
 
@@ -443,14 +442,13 @@ public class DefaultConfiguration implements Configuration {
         }
 
         return new ActionConfig.Builder(baseConfig)
-            .addParams(params)
-            .addResultConfigs(results)
-            .defaultClassName(packageContext.getDefaultClassRef())  // fill in default if non class has been provided
-            .interceptors(interceptors)
-            .addExceptionMappings(packageContext.getAllExceptionMappingConfigs())
-            .build();
+                .addParams(params)
+                .addResultConfigs(results)
+                .defaultClassName(packageContext.getDefaultClassRef()) // fill in default if non class has been provided
+                .interceptors(interceptors)
+                .addExceptionMappings(packageContext.getAllExceptionMappingConfigs())
+                .build();
     }
-
 
     private static class RuntimeConfigurationImpl implements RuntimeConfiguration {
 
@@ -460,8 +458,8 @@ public class DefaultConfiguration implements Configuration {
         private Map<String, String> namespaceConfigs;
 
         public RuntimeConfigurationImpl(Map<String, Map<String, ActionConfig>> namespaceActionConfigs,
-                                        Map<String, String> namespaceConfigs,
-                                        PatternMatcher<int[]> matcher) {
+                Map<String, String> namespaceConfigs,
+                PatternMatcher<int[]> matcher) {
             this.namespaceActionConfigs = namespaceActionConfigs;
             this.namespaceConfigs = namespaceConfigs;
 
@@ -473,13 +471,13 @@ public class DefaultConfiguration implements Configuration {
             }
         }
 
-
         /**
-         * Gets the configuration information for an action name, or returns null if the
-         * name is not recognized.
+         * Gets the configuration information for an action name, or returns null if the name is not recognized.
          *
-         * @param name      the name of the action
-         * @param namespace the namespace for the action or null for the empty namespace, ""
+         * @param name
+         *            the name of the action
+         * @param namespace
+         *            the namespace for the action or null for the empty namespace, ""
          * @return the configuration information for action requested
          */
         public ActionConfig getActionConfig(String namespace, String name) {
@@ -504,7 +502,6 @@ public class DefaultConfiguration implements Configuration {
             if ((config == null) && (namespace != null) && (!"".equals(namespace.trim()))) {
                 config = findActionConfigInNamespace("", name);
             }
-
 
             return config;
         }
@@ -537,7 +534,7 @@ public class DefaultConfiguration implements Configuration {
          *
          * @return a Map of namespace - > Map of ActionConfig objects, with the key being the action name
          */
-        public Map<String, Map<String, ActionConfig>>  getActionConfigs() {
+        public Map<String, Map<String, ActionConfig>> getActionConfigs() {
             return namespaceActionConfigs;
         }
 
@@ -564,14 +561,14 @@ public class DefaultConfiguration implements Configuration {
         public Object setProperty(String key, String value) {
             String oldValue = getProperty(key);
             if (LOG.isInfoEnabled() && oldValue != null && !oldValue.equals(value) && !defaultFrameworkBeanName.equals(oldValue)) {
-                LOG.info("Overriding property "+key+" - old value: "+oldValue+" new value: "+value);
+                LOG.info("Overriding property " + key + " - old value: " + oldValue + " new value: " + value);
             }
             return super.setProperty(key, value);
         }
 
         public void setConstants(ContainerBuilder builder) {
             for (Object keyobj : keySet()) {
-                String key = (String)keyobj;
+                String key = (String) keyobj;
                 builder.factory(String.class, key,
                         new LocatableConstantFactory<String>(getProperty(key), getPropertyLocation(key)));
             }

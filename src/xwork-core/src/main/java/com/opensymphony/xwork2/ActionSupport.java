@@ -29,10 +29,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-
 /**
- * Provides a default implementation for the most common actions.
- * See the documentation for all the interfaces this class implements for more detailed information.
+ * Provides a default implementation for the most common actions. See the documentation for all the interfaces this class implements for more detailed
+ * information.
  */
 public class ActionSupport implements Action, Validateable, ValidationAware, TextProvider, LocaleProvider, Serializable {
 
@@ -89,7 +88,7 @@ public class ActionSupport implements Action, Validateable, ValidationAware, Tex
             return ctx.getLocale();
         } else {
             if (LOG.isDebugEnabled()) {
-        	LOG.debug("Action context not initialized");
+                LOG.debug("Action context not initialized");
             }
             return null;
         }
@@ -138,8 +137,10 @@ public class ActionSupport implements Action, Validateable, ValidationAware, Tex
     /**
      * Dedicated method to support I10N and conversion errors
      *
-     * @param key message which contains formatting string
-     * @param expr that should be formatted
+     * @param key
+     *            message which contains formatting string
+     * @param expr
+     *            that should be formatted
      * @return formatted expr with format specified by key
      */
     public String getFormatted(String key, String expr) {
@@ -190,7 +191,8 @@ public class ActionSupport implements Action, Validateable, ValidationAware, Tex
      * See also {@link com.opensymphony.xwork2.Action#execute()}.
      *
      * @return returns {@link #SUCCESS}
-     * @throws Exception can be thrown by subclasses.
+     * @throws Exception
+     *             can be thrown by subclasses.
      */
     public String execute() throws Exception {
         return SUCCESS;
@@ -213,48 +215,42 @@ public class ActionSupport implements Action, Validateable, ValidationAware, Tex
     }
 
     /**
-     * Clears field errors. Useful for Continuations and other situations
-     * where you might want to clear parts of the state on the same action.
+     * Clears field errors. Useful for Continuations and other situations where you might want to clear parts of the state on the same action.
      */
     public void clearFieldErrors() {
         validationAware.clearFieldErrors();
     }
 
     /**
-     * Clears action errors. Useful for Continuations and other situations
-     * where you might want to clear parts of the state on the same action.
+     * Clears action errors. Useful for Continuations and other situations where you might want to clear parts of the state on the same action.
      */
     public void clearActionErrors() {
         validationAware.clearActionErrors();
     }
 
     /**
-     * Clears messages. Useful for Continuations and other situations
-     * where you might want to clear parts of the state on the same action.
+     * Clears messages. Useful for Continuations and other situations where you might want to clear parts of the state on the same action.
      */
     public void clearMessages() {
         validationAware.clearMessages();
     }
 
     /**
-     * Clears all errors. Useful for Continuations and other situations
-     * where you might want to clear parts of the state on the same action.
+     * Clears all errors. Useful for Continuations and other situations where you might want to clear parts of the state on the same action.
      */
     public void clearErrors() {
         validationAware.clearErrors();
     }
 
     /**
-     * Clears all errors and messages. Useful for Continuations and other situations
-     * where you might want to clear parts of the state on the same action.
+     * Clears all errors and messages. Useful for Continuations and other situations where you might want to clear parts of the state on the same action.
      */
     public void clearErrorsAndMessages() {
         validationAware.clearErrorsAndMessages();
     }
 
     /**
-     * A default implementation that validates nothing.
-     * Subclasses should override this method to provide validations.
+     * A default implementation that validates nothing. Subclasses should override this method to provide validations.
      */
     public void validate() {
     }
@@ -265,28 +261,26 @@ public class ActionSupport implements Action, Validateable, ValidationAware, Tex
     }
 
     /**
-     * <!-- START SNIPPET: pause-method -->
-     * Stops the action invocation immediately (by throwing a PauseException) and causes the action invocation to return
+     * <!-- START SNIPPET: pause-method --> Stops the action invocation immediately (by throwing a PauseException) and causes the action invocation to return
      * the specified result, such as {@link #SUCCESS}, {@link #INPUT}, etc.
      * <p/>
      * <p/>
-     * The next time this action is invoked (and using the same continuation ID), the method will resume immediately
-     * after where this method was called, with the entire call stack in the execute method restored.
+     * The next time this action is invoked (and using the same continuation ID), the method will resume immediately after where this method was called, with
+     * the entire call stack in the execute method restored.
      * <p/>
      * <p/>
-     * Note: this method can <b>only</b> be called within the {@link #execute()} method.
-     * <!-- END SNIPPET: pause-method -->
+     * Note: this method can <b>only</b> be called within the {@link #execute()} method. <!-- END SNIPPET: pause-method -->
      *
-     * @param result the result to return - the same type of return value in the {@link #execute()} method.
+     * @param result
+     *            the result to return - the same type of return value in the {@link #execute()} method.
      */
     public void pause(String result) {
     }
 
     /**
-     * If called first time it will create {@link com.opensymphony.xwork2.TextProviderFactory},
-     * inject dependency (if {@link com.opensymphony.xwork2.inject.Container} is accesible) into in,
-     * then will create new {@link com.opensymphony.xwork2.TextProvider} and store it in a field
-     * for future references and at the returns reference to that field
+     * If called first time it will create {@link com.opensymphony.xwork2.TextProviderFactory}, inject dependency (if
+     * {@link com.opensymphony.xwork2.inject.Container} is accesible) into in, then will create new {@link com.opensymphony.xwork2.TextProvider} and store it in
+     * a field for future references and at the returns reference to that field
      *
      * @return reference to field with TextProvider
      */

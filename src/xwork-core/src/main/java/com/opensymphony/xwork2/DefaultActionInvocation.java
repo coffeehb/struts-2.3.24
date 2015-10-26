@@ -37,7 +37,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * The Default ActionInvocation implementation
  *
@@ -94,7 +93,7 @@ public class DefaultActionInvocation implements ActionInvocation {
         this.container = cont;
     }
 
-    @Inject(required=false)
+    @Inject(required = false)
     public void setActionEventListener(ActionEventListener listener) {
         this.actionEventListener = listener;
     }
@@ -121,10 +120,9 @@ public class DefaultActionInvocation implements ActionInvocation {
     }
 
     /**
-     * If the DefaultActionInvocation has been executed before and the Result is an instance of ActionChainResult, this method
-     * will walk down the chain of ActionChainResults until it finds a non-chain result, which will be returned. If the
-     * DefaultActionInvocation's result has not been executed before, the Result instance will be created and populated with
-     * the result params.
+     * If the DefaultActionInvocation has been executed before and the Result is an instance of ActionChainResult, this method will walk down the chain of
+     * ActionChainResults until it finds a non-chain result, which will be returned. If the DefaultActionInvocation's result has not been executed before, the
+     * Result instance will be created and populated with the result params.
      *
      * @return a Result instance
      * @throws Exception
@@ -163,17 +161,17 @@ public class DefaultActionInvocation implements ActionInvocation {
         this.resultCode = resultCode;
     }
 
-
     public ValueStack getStack() {
         return stack;
     }
 
     /**
-     * Register a com.opensymphony.xwork2.interceptor.PreResultListener to be notified after the Action is executed and before the
-     * Result is executed. The ActionInvocation implementation must guarantee that listeners will be called in the order
-     * in which they are registered. Listener registration and execution does not need to be thread-safe.
+     * Register a com.opensymphony.xwork2.interceptor.PreResultListener to be notified after the Action is executed and before the Result is executed. The
+     * ActionInvocation implementation must guarantee that listeners will be called in the order in which they are registered. Listener registration and
+     * execution does not need to be thread-safe.
      *
-     * @param listener to register
+     * @param listener
+     *            to register
      */
     public void addPreResultListener(PreResultListener listener) {
         if (preResultListeners == null) {
@@ -203,7 +201,7 @@ public class DefaultActionInvocation implements ActionInvocation {
                 LOG.debug("Got NPE trying to read result configuration for resultCode [#0]", resultCode);
             }
         }
-        
+
         if (resultConfig == null) {
             // If no result is found for the given resultCode, try to get a wildcard '*' match.
             resultConfig = results.get("*");
@@ -225,7 +223,8 @@ public class DefaultActionInvocation implements ActionInvocation {
     }
 
     /**
-     * @throws ConfigurationException If no result can be found with the returned code
+     * @throws ConfigurationException
+     *             If no result can be found with the returned code
      */
     public String invoke() throws Exception {
         String profileKey = "invoke: ";
@@ -241,9 +240,8 @@ public class DefaultActionInvocation implements ActionInvocation {
                 String interceptorMsg = "interceptor: " + interceptor.getName();
                 UtilTimerStack.push(interceptorMsg);
                 try {
-                                resultCode = interceptor.getInterceptor().intercept(DefaultActionInvocation.this);
-                            }
-                finally {
+                    resultCode = interceptor.getInterceptor().intercept(DefaultActionInvocation.this);
+                } finally {
                     UtilTimerStack.pop(interceptorMsg);
                 }
             } else {
@@ -261,8 +259,7 @@ public class DefaultActionInvocation implements ActionInvocation {
                         try {
                             UtilTimerStack.push(_profileKey);
                             listener.beforeResult(this, resultCode);
-                        }
-                        finally {
+                        } finally {
                             UtilTimerStack.pop(_profileKey);
                         }
                     }
@@ -277,8 +274,7 @@ public class DefaultActionInvocation implements ActionInvocation {
             }
 
             return resultCode;
-        }
-        finally {
+        } finally {
             UtilTimerStack.pop(profileKey);
         }
     }
@@ -307,7 +303,8 @@ public class DefaultActionInvocation implements ActionInvocation {
             } else if (proxy.getConfig().getClassName() == null) {
                 gripe = "No Action defined for '" + proxy.getActionName() + "' in namespace '" + proxy.getNamespace() + "'";
             } else {
-                gripe = "Unable to instantiate Action, " + proxy.getConfig().getClassName() + ",  defined for '" + proxy.getActionName() + "' in namespace '" + proxy.getNamespace() + "'";
+                gripe = "Unable to instantiate Action, " + proxy.getConfig().getClassName() + ",  defined for '" + proxy.getActionName() + "' in namespace '"
+                        + proxy.getNamespace() + "'";
             }
 
             gripe += (((" -- " + e.getMessage()) != null) ? e.getMessage() : " [no message in exception]");
@@ -347,7 +344,7 @@ public class DefaultActionInvocation implements ActionInvocation {
             contextMap.putAll(extraContext);
         }
 
-        //put this DefaultActionInvocation into the context map
+        // put this DefaultActionInvocation into the context map
         contextMap.put(ActionContext.ACTION_INVOCATION, this);
         contextMap.put(ActionContext.CONTAINER, container);
 
@@ -357,7 +354,8 @@ public class DefaultActionInvocation implements ActionInvocation {
     /**
      * Uses getResult to get the final Result and executes it
      *
-     * @throws ConfigurationException If not result can be found with the returned code
+     * @throws ConfigurationException
+     *             If not result can be found with the returned code
      */
     private void executeResult() throws Exception {
         result = createResult();
@@ -480,8 +478,11 @@ public class DefaultActionInvocation implements ActionInvocation {
 
     /**
      * Save the result to be used later.
-     * @param actionConfig current ActionConfig
-     * @param methodResult the result of the action.
+     * 
+     * @param actionConfig
+     *            current ActionConfig
+     * @param methodResult
+     *            the result of the action.
      * @return the result code to process.
      */
     protected String saveResult(ActionConfig actionConfig, Object methodResult) {
@@ -510,7 +511,8 @@ public class DefaultActionInvocation implements ActionInvocation {
     /**
      * Restoring Container
      *
-     * @param actionContext current {@link ActionContext}
+     * @param actionContext
+     *            current {@link ActionContext}
      * @return instance which can be used to invoke action
      */
     public ActionInvocation deserialize(ActionContext actionContext) {

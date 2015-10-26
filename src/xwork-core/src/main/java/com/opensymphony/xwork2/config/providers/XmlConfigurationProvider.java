@@ -52,10 +52,8 @@ import java.lang.reflect.Modifier;
 import java.net.URL;
 import java.util.*;
 
-
 /**
- * Looks in the classpath for an XML file, "xwork.xml" by default,
- * and uses it for the XWork configuration.
+ * Looks in the classpath for an XML file, "xwork.xml" by default, and uses it for the XWork configuration.
  *
  * @author tmjee
  * @author Rainer Hermanns
@@ -177,6 +175,7 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
             LOG.info("Parsing configuration file [" + configFileName + "]");
         }
         Map<String, Node> loadedBeans = new HashMap<String, Node>();
+
         for (Document doc : documents) {
             Element rootElement = doc.getDocumentElement();
             NodeList children = rootElement.getChildNodes();
@@ -386,8 +385,8 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
     }
 
     /**
-     * Tells whether the ConfigurationProvider should reload its configuration. This method should only be called
-     * if ConfigurationManager.isReloadingConfigs() is true.
+     * Tells whether the ConfigurationProvider should reload its configuration. This method should only be called if ConfigurationManager.isReloadingConfigs()
+     * is true.
      *
      * @return true if the file has been changed since the last time we read it
      */
@@ -409,21 +408,20 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
 
         if (location == null) {
             if (LOG.isWarnEnabled()) {
-            LOG.warn("location null for " + className);
+                LOG.warn("location null for " + className);
             }
         }
-        //methodName should be null if it's not set
+        // methodName should be null if it's not set
         methodName = (methodName.trim().length() > 0) ? methodName.trim() : null;
 
         // if there isnt a class name specified for an <action/> then try to
         // use the default-class-ref from the <package/>
         if (StringUtils.isEmpty(className)) {
             // if there is a package default-class-ref use that, otherwise use action support
-           /* if (StringUtils.isNotEmpty(packageContext.getDefaultClassRef())) {
-                className = packageContext.getDefaultClassRef();
-            } else {
-                className = ActionSupport.class.getName();
-            }*/
+            /*
+             * if (StringUtils.isNotEmpty(packageContext.getDefaultClassRef())) { className = packageContext.getDefaultClassRef(); } else { className =
+             * ActionSupport.class.getName(); }
+             */
 
         } else {
             if (!verifyAction(className, name, location)) {
@@ -459,7 +457,8 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
         packageContext.addActionConfig(name, actionConfig);
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Loaded " + (StringUtils.isNotEmpty(packageContext.getNamespace()) ? (packageContext.getNamespace() + "/") : "") + name + " in '" + packageContext.getName() + "' package:" + actionConfig);
+            LOG.debug("Loaded " + (StringUtils.isNotEmpty(packageContext.getNamespace()) ? (packageContext.getNamespace() + "/") : "") + name + " in '"
+                    + packageContext.getName() + "' package:" + actionConfig);
         }
     }
 
@@ -477,7 +476,7 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
                 if (!Modifier.isPublic(clazz.getModifiers())) {
                     throw new ConfigurationException("Action class [" + className + "] is not public", loc);
                 }
-                clazz.getConstructor(new Class[]{});
+                clazz.getConstructor(new Class[] {});
             }
         } catch (ClassNotFoundException e) {
             if (LOG.isDebugEnabled()) {
@@ -645,6 +644,8 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
         String abstractVal = packageElement.getAttribute("abstract");
         boolean isAbstract = Boolean.parseBoolean(abstractVal);
         String name = StringUtils.defaultString(packageElement.getAttribute("name"));
+
+        // shuliang: return the passed string or ""
         String namespace = StringUtils.defaultString(packageElement.getAttribute("namespace"));
         String strictDMIVal = StringUtils.defaultString(packageElement.getAttribute("strict-method-invocation"));
         boolean strictDMI = Boolean.parseBoolean(strictDMIVal);
@@ -660,8 +661,14 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
                 .strictMethodInvocation(strictDMI)
                 .location(DomHelper.getLocationObject(packageElement));
 
-        if (StringUtils.isNotEmpty(StringUtils.defaultString(parent))) { // has parents, let's look it up
+        // has parents, let's look it up
+        /*
+         * shuliang: how it lookup the parent package configuration???
+         */
+        if (StringUtils.isNotEmpty(StringUtils.defaultString(parent))) {
             List<PackageConfig> parents = new ArrayList<PackageConfig>();
+            
+            // shuliang: package.extends is separated by ","
             for (String parentPackageName : ConfigurationUtil.buildParentListFromString(parent)) {
                 if (configuration.getPackageConfigNames().contains(parentPackageName)) {
                     parents.add(configuration.getPackageConfig(parentPackageName));
@@ -717,7 +724,6 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
                                 + resultName + "', perhaps the parent package does not specify the result type?", resultElement);
                     }
                 }
-
 
                 ResultTypeConfig config = packageContext.getResultType(resultType);
 
@@ -789,7 +795,7 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
         if (type != null) {
             sb = new StringBuilder();
             boolean capNext = false;
-            for (int x=0; x<type.length(); x++) {
+            for (int x = 0; x < type.length(); x++) {
                 char c = type.charAt(x);
                 if (c == '-') {
                     capNext = true;
@@ -910,16 +916,16 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
         }
     }
 
-    //    protected void loadIncludes(Element rootElement, DocumentBuilder db) throws Exception {
-    //        NodeList includeList = rootElement.getElementsByTagName("include");
+    // protected void loadIncludes(Element rootElement, DocumentBuilder db) throws Exception {
+    // NodeList includeList = rootElement.getElementsByTagName("include");
     //
-    //        for (int i = 0; i < includeList.getLength(); i++) {
-    //            Element includeElement = (Element) includeList.item(i);
-    //            String fileName = includeElement.getAttribute("file");
-    //            includedFileNames.add(fileName);
-    //            loadConfigurationFile(fileName, db);
-    //        }
-    //    }
+    // for (int i = 0; i < includeList.getLength(); i++) {
+    // Element includeElement = (Element) includeList.item(i);
+    // String fileName = includeElement.getAttribute("file");
+    // includedFileNames.add(fileName);
+    // loadConfigurationFile(fileName, db);
+    // }
+    // }
     protected InterceptorStackConfig loadInterceptorStack(Element element, PackageConfig.Builder context) throws ConfigurationException {
         String name = element.getAttribute("name");
 
@@ -968,17 +974,18 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
         loadInterceptorStacks(element, context);
     }
 
-    //    protected void loadPackages(Element rootElement) throws ConfigurationException {
-    //        NodeList packageList = rootElement.getElementsByTagName("package");
+    // protected void loadPackages(Element rootElement) throws ConfigurationException {
+    // NodeList packageList = rootElement.getElementsByTagName("package");
     //
-    //        for (int i = 0; i < packageList.getLength(); i++) {
-    //            Element packageElement = (Element) packageList.item(i);
-    //            addPackage(packageElement);
-    //        }
-    //    }
+    // for (int i = 0; i < packageList.getLength(); i++) {
+    // Element packageElement = (Element) packageList.item(i);
+    // addPackage(packageElement);
+    // }
+    // }
     private List<Document> loadConfigurationFiles(String fileName, Element includeElement) {
         List<Document> docs = new ArrayList<Document>();
         List<Document> finalDocs = new ArrayList<Document>();
+
         if (!includedFileNames.contains(fileName)) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Loading action configurations from: " + fileName);
@@ -1001,8 +1008,8 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
                     throw new ConfigurationException("Could not open files of the name " + fileName, ioException);
                 } else {
                     if (LOG.isInfoEnabled()) {
-                    LOG.info("Unable to locate configuration files of the name "
-                            + fileName + ", skipping");
+                        LOG.info("Unable to locate configuration files of the name "
+                                + fileName + ", skipping");
                     }
                     return docs;
                 }
@@ -1039,13 +1046,16 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
                 }
             }
 
-            //sort the documents, according to the "order" attribute
+            // sort the documents, according to the "order" attribute
             Collections.sort(docs, new Comparator<Document>() {
                 public int compare(Document doc1, Document doc2) {
                     return XmlHelper.getLoadOrder(doc1).compareTo(XmlHelper.getLoadOrder(doc2));
                 }
             });
 
+            /*
+             * shuliang: parse <include> element
+             */
             for (Document doc : docs) {
                 Element rootElement = doc.getDocumentElement();
                 NodeList children = rootElement.getChildNodes();
@@ -1075,6 +1085,7 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
                         }
                     }
                 }
+
                 finalDocs.add(doc);
             }
 
@@ -1092,18 +1103,21 @@ public class XmlConfigurationProvider implements ConfigurationProvider {
     /**
      * Allows subclasses to load extra information from the document
      *
-     * @param doc The configuration document
+     * @param doc
+     *            The configuration document
      */
     protected void loadExtraConfiguration(Document doc) {
         // no op
     }
 
     /**
-     * Looks up the Interceptor Class from the interceptor-ref name and creates an instance, which is added to the
-     * provided List, or, if this is a ref to a stack, it adds the Interceptor instances from the List to this stack.
+     * Looks up the Interceptor Class from the interceptor-ref name and creates an instance, which is added to the provided List, or, if this is a ref to a
+     * stack, it adds the Interceptor instances from the List to this stack.
      *
-     * @param interceptorRefElement Element to pull interceptor ref data from
-     * @param context               The PackageConfig to lookup the interceptor from
+     * @param interceptorRefElement
+     *            Element to pull interceptor ref data from
+     * @param context
+     *            The PackageConfig to lookup the interceptor from
      * @return A list of Interceptor objects
      */
     private List<InterceptorMapping> lookupInterceptorReference(PackageConfig.Builder context, Element interceptorRefElement) throws ConfigurationException {

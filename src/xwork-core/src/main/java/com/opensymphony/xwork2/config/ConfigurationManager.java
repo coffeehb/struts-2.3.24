@@ -27,10 +27,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-
 /**
- * ConfigurationManager - central for XWork Configuration management, including
- * its ConfigurationProvider.
+ * ConfigurationManager - central for XWork Configuration management, including its ConfigurationProvider.
  *
  * @author Jason Carreira
  * @author tm_jee
@@ -39,29 +37,33 @@ import java.util.concurrent.locks.ReentrantLock;
 public class ConfigurationManager {
 
     protected static final Logger LOG = LoggerFactory.getLogger(ConfigurationManager.class);
+
     protected Configuration configuration;
-    protected Lock providerLock = new ReentrantLock();
     private List<ContainerProvider> containerProviders = new CopyOnWriteArrayList<ContainerProvider>();
     private List<PackageProvider> packageProviders = new CopyOnWriteArrayList<PackageProvider>();
+
     protected String defaultFrameworkBeanName;
+    protected Lock providerLock = new ReentrantLock();
     private boolean providersChanged = false;
     private boolean reloadConfigs = true; // for the first time
 
     public ConfigurationManager() {
         this("xwork");
     }
-    
+
+    // shuliang: name='struts'
     public ConfigurationManager(String name) {
         this.defaultFrameworkBeanName = name;
     }
 
     /**
-     * Get the current XWork configuration object.  By default an instance of DefaultConfiguration will be returned
+     * Get the current XWork configuration object. By default an instance of DefaultConfiguration will be returned
      *
      * @see com.opensymphony.xwork2.config.impl.DefaultConfiguration
      */
     public synchronized Configuration getConfiguration() {
         if (configuration == null) {
+            // shuliang: new DefaultConfiguration("struts");
             setConfiguration(createConfiguration(defaultFrameworkBeanName));
             try {
                 configuration.reloadContainer(getContainerProviders());
@@ -85,12 +87,12 @@ public class ConfigurationManager {
     }
 
     /**
-     * Get the current list of ConfigurationProviders. If no custom ConfigurationProviders have been added, this method
-     * will return a list containing only the default ConfigurationProvider, XMLConfigurationProvider.  if a custom
-     * ConfigurationProvider has been added, then the XmlConfigurationProvider must be added by hand.
+     * Get the current list of ConfigurationProviders. If no custom ConfigurationProviders have been added, this method will return a list containing only the
+     * default ConfigurationProvider, XMLConfigurationProvider. if a custom ConfigurationProvider has been added, then the XmlConfigurationProvider must be
+     * added by hand.
      * </p>
      * <p/>
-     * TODO: the lazy instantiation of XmlConfigurationProvider should be refactored to be elsewhere.  the behavior described above seems unintuitive.
+     * TODO: the lazy instantiation of XmlConfigurationProvider should be refactored to be elsewhere. the behavior described above seems unintuitive.
      *
      * @return the list of registered ConfigurationProvider objects
      * @see ConfigurationProvider
@@ -112,7 +114,8 @@ public class ConfigurationManager {
     /**
      * Set the list of configuration providers
      *
-     * @param containerProviders list of {@link ConfigurationProvider} to be set
+     * @param containerProviders
+     *            list of {@link ConfigurationProvider} to be set
      */
     public void setContainerProviders(List<ContainerProvider> containerProviders) {
         providerLock.lock();
@@ -125,10 +128,10 @@ public class ConfigurationManager {
     }
 
     /**
-     * adds a configuration provider to the List of ConfigurationProviders.  a given ConfigurationProvider may be added
-     * more than once
+     * adds a configuration provider to the List of ConfigurationProviders. a given ConfigurationProvider may be added more than once
      *
-     * @param provider the ConfigurationProvider to register
+     * @param provider
+     *            the ConfigurationProvider to register
      */
     public void addContainerProvider(ContainerProvider provider) {
         if (!containerProviders.contains(provider)) {
@@ -165,7 +168,6 @@ public class ConfigurationManager {
             configuration.destroy(); // let's destroy it first, before nulling it.
         configuration = null;
     }
-
 
     /**
      * Reloads the Configuration files if the configuration files indicate that they need to be reloaded.

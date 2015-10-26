@@ -36,7 +36,7 @@ import java.util.Set;
  * Creates an Ognl value stack
  */
 public class OgnlValueStackFactory implements ValueStackFactory {
-    
+
     private XWorkConverter xworkConverter;
     private CompoundRootAccessor compoundRootAccessor;
     private TextProvider textProvider;
@@ -47,13 +47,13 @@ public class OgnlValueStackFactory implements ValueStackFactory {
     public void setXWorkConverter(XWorkConverter conv) {
         this.xworkConverter = conv;
     }
-    
+
     @Inject("system")
     public void setTextProvider(TextProvider textProvider) {
         this.textProvider = textProvider;
     }
-    
-    @Inject(value="allowStaticMethodAccess", required=false)
+
+    @Inject(value = "allowStaticMethodAccess", required = false)
     public void setAllowStaticMethodAccess(String allowStaticMethodAccess) {
         this.allowStaticMethodAccess = "true".equalsIgnoreCase(allowStaticMethodAccess);
     }
@@ -71,7 +71,7 @@ public class OgnlValueStackFactory implements ValueStackFactory {
         stack.getContext().put(ActionContext.CONTAINER, container);
         return result;
     }
-    
+
     @Inject
     public void setContainer(Container container) throws ClassNotFoundException {
         Set<String> names = container.getInstanceNames(PropertyAccessor.class);

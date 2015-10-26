@@ -81,6 +81,7 @@ public class PrepareOperations {
             stack.getContext().putAll(dispatcher.createContextMap(request, response, null));
             ctx = new ActionContext(stack.getContext());
         }
+
         request.setAttribute(CLEANUP_RECURSION_COUNTER, counter);
         ActionContext.setContext(ctx);
         return ctx;

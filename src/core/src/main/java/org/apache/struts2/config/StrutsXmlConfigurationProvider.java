@@ -57,7 +57,8 @@ public class StrutsXmlConfigurationProvider extends XmlConfigurationProvider {
     /**
      * Constructs the configuration provider
      *
-     * @param errorIfMissing If we should throw an exception if the file can't be found
+     * @param errorIfMissing
+     *            If we should throw an exception if the file can't be found
      */
     public StrutsXmlConfigurationProvider(boolean errorIfMissing) {
         this("struts.xml", errorIfMissing, null);
@@ -66,28 +67,36 @@ public class StrutsXmlConfigurationProvider extends XmlConfigurationProvider {
     /**
      * Constructs the configuration provider
      *
-     * @param filename The filename to look for
-     * @param errorIfMissing If we should throw an exception if the file can't be found
-     * @param ctx Our ServletContext
+     * @param filename
+     *            The filename to look for
+     * @param errorIfMissing
+     *            If we should throw an exception if the file can't be found
+     * @param ctx
+     *            Our ServletContext
      */
     public StrutsXmlConfigurationProvider(String filename, boolean errorIfMissing, ServletContext ctx) {
         super(filename, errorIfMissing);
         this.servletContext = ctx;
         this.filename = filename;
-        reloadKey = "configurationReload-"+filename;
-        Map<String,String> dtdMappings = new HashMap<String,String>(getDtdMappings());
+        reloadKey = "configurationReload-" + filename;
+        Map<String, String> dtdMappings = new HashMap<String, String>(getDtdMappings());
+
         dtdMappings.put("-//Apache Software Foundation//DTD Struts Configuration 2.0//EN", "struts-2.0.dtd");
         dtdMappings.put("-//Apache Software Foundation//DTD Struts Configuration 2.1//EN", "struts-2.1.dtd");
         dtdMappings.put("-//Apache Software Foundation//DTD Struts Configuration 2.1.7//EN", "struts-2.1.7.dtd");
         dtdMappings.put("-//Apache Software Foundation//DTD Struts Configuration 2.3//EN", "struts-2.3.dtd");
+
         setDtdMappings(dtdMappings);
+
         File file = new File(filename);
         if (file.getParent() != null) {
             this.baseDir = file.getParentFile();
         }
     }
-    
-    /* (non-Javadoc)
+
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.opensymphony.xwork2.config.providers.XmlConfigurationProvider#register(com.opensymphony.xwork2.inject.ContainerBuilder, java.util.Properties)
      */
     @Override
@@ -102,7 +111,9 @@ public class StrutsXmlConfigurationProvider extends XmlConfigurationProvider {
         super.register(containerBuilder, props);
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see com.opensymphony.xwork2.config.providers.XmlConfigurationProvider#init(com.opensymphony.xwork2.config.Configuration)
      */
     @Override
@@ -115,7 +126,8 @@ public class StrutsXmlConfigurationProvider extends XmlConfigurationProvider {
     /**
      * Look for the configuration file on the classpath and in the file system
      *
-     * @param fileName The file name to retrieve
+     * @param fileName
+     *            The file name to retrieve
      * @see com.opensymphony.xwork2.config.providers.XmlConfigurationProvider#getConfigurationUrls
      */
     @Override
@@ -151,7 +163,7 @@ public class StrutsXmlConfigurationProvider extends XmlConfigurationProvider {
             try {
                 url = file.toURI().toURL();
             } catch (MalformedURLException e) {
-                throw new IOException("Unable to convert "+file+" to a URL");
+                throw new IOException("Unable to convert " + file + " to a URL");
             }
         }
         return url;
@@ -170,8 +182,8 @@ public class StrutsXmlConfigurationProvider extends XmlConfigurationProvider {
         }
 
     }
-    
+
     public String toString() {
-        return ("Struts XML configuration provider ("+filename+")");
+        return ("Struts XML configuration provider (" + filename + ")");
     }
 }

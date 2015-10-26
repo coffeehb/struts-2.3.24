@@ -27,9 +27,9 @@ import java.util.Map;
 
 /**
  * Simple class that holds the action mapping information used to invoke a
- * Struts action. The name and namespace are required, but the params map
- * is optional, and as such may be null. If a params map is supplied,
- * it <b>must</b> be a mutable map, such as a HashMap.
+ * Struts action. The name and namespace are required, but the params map is
+ * optional, and as such may be null. If a params map is supplied, it
+ * <b>must</b> be a mutable map, such as a HashMap.
  *
  */
 public class ActionMapping {
@@ -44,12 +44,14 @@ public class ActionMapping {
     /**
      * Constructs an ActionMapping
      */
-    public ActionMapping() {}
+    public ActionMapping() {
+    }
 
     /**
      * Constructs an ActionMapping with a default result
      *
-     * @param result The default result
+     * @param result
+     *            The default result
      */
     public ActionMapping(Result result) {
         this.result = result;
@@ -58,10 +60,14 @@ public class ActionMapping {
     /**
      * Constructs an ActionMapping with its values
      *
-     * @param name The action name
-     * @param namespace The action namespace
-     * @param method The method
-     * @param params The extra parameters
+     * @param name
+     *            The action name
+     * @param namespace
+     *            The action namespace
+     * @param method
+     *            The method
+     * @param params
+     *            The extra parameters
      */
     public ActionMapping(String name, String namespace, String method, Map<String, Object> params) {
         this.name = name;
@@ -108,7 +114,7 @@ public class ActionMapping {
     public Result getResult() {
         return result;
     }
-    
+
     /**
      * @return The extension used during this request
      */
@@ -117,42 +123,48 @@ public class ActionMapping {
     }
 
     /**
-     * @param result The result
+     * @param result
+     *            The result
      */
     public void setResult(Result result) {
         this.result = result;
     }
 
     /**
-     * @param name The action name
+     * @param name
+     *            The action name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * @param namespace The action namespace
+     * @param namespace
+     *            The action namespace
      */
     public void setNamespace(String namespace) {
         this.namespace = namespace;
     }
 
     /**
-     * @param method The method name to call on the action
+     * @param method
+     *            The method name to call on the action
      */
     public void setMethod(String method) {
         this.method = method;
     }
 
     /**
-     * @param params The extra parameters for this mapping
+     * @param params
+     *            The extra parameters for this mapping
      */
     public void setParams(Map<String, Object> params) {
         this.params = params;
     }
-    
+
     /**
-     * @param extension The extension used in the request
+     * @param extension
+     *            The extension used in the request
      */
     public void setExtension(String extension) {
         this.extension = extension;

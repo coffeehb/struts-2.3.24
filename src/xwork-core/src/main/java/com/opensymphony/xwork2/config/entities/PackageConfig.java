@@ -27,7 +27,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * Configuration for Package.
  * <p/>
@@ -92,8 +91,7 @@ public class PackageConfig extends Located implements Comparable, Serializable, 
     }
 
     /**
-     * returns the Map of all the ActionConfigs available in the current package.
-     * ActionConfigs defined in ancestor packages will be included in this Map.
+     * returns the Map of all the ActionConfigs available in the current package. ActionConfigs defined in ancestor packages will be included in this Map.
      *
      * @return a Map of ActionConfig Objects with the action name as the key
      * @see ActionConfig
@@ -113,8 +111,8 @@ public class PackageConfig extends Located implements Comparable, Serializable, 
     }
 
     /**
-     * returns the Map of all the global ResultConfigs available in the current package.
-     * Global ResultConfigs defined in ancestor packages will be included in this Map.
+     * returns the Map of all the global ResultConfigs available in the current package. Global ResultConfigs defined in ancestor packages will be included in
+     * this Map.
      *
      * @return a Map of Result Objects with the result name as the key
      * @see ResultConfig
@@ -134,8 +132,8 @@ public class PackageConfig extends Located implements Comparable, Serializable, 
     }
 
     /**
-     * returns the Map of all InterceptorConfigs and InterceptorStackConfigs available in the current package.
-     * InterceptorConfigs defined in ancestor packages will be included in this Map.
+     * returns the Map of all InterceptorConfigs and InterceptorStackConfigs available in the current package. InterceptorConfigs defined in ancestor packages
+     * will be included in this Map.
      *
      * @return a Map of InterceptorConfig and InterceptorStackConfig Objects with the ref-name as the key
      * @see InterceptorConfig
@@ -156,8 +154,8 @@ public class PackageConfig extends Located implements Comparable, Serializable, 
     }
 
     /**
-     * returns the Map of all the ResultTypeConfigs available in the current package.
-     * ResultTypeConfigs defined in ancestor packages will be included in this Map.
+     * returns the Map of all the ResultTypeConfigs available in the current package. ResultTypeConfigs defined in ancestor packages will be included in this
+     * Map.
      *
      * @return a Map of ResultTypeConfig Objects with the result type name as the key
      * @see ResultTypeConfig
@@ -177,8 +175,8 @@ public class PackageConfig extends Located implements Comparable, Serializable, 
     }
 
     /**
-     * returns the List of all the ExceptionMappingConfigs available in the current package.
-     * ExceptionMappingConfigs defined in ancestor packages will be included in this list.
+     * returns the List of all the ExceptionMappingConfigs available in the current package. ExceptionMappingConfigs defined in ancestor packages will be
+     * included in this list.
      *
      * @return a List of ExceptionMappingConfigs Objects with the result type name as the key
      * @see ExceptionMappingConfig
@@ -196,7 +194,6 @@ public class PackageConfig extends Located implements Comparable, Serializable, 
 
         return allExceptionMappings;
     }
-
 
     public String getDefaultInterceptorRef() {
         return defaultInterceptorRef;
@@ -226,8 +223,7 @@ public class PackageConfig extends Located implements Comparable, Serializable, 
     }
 
     /**
-     * gets the default interceptor-ref name. If this is not set on this PackageConfig, it searches the parent
-     * PackageConfigs in order until it finds one.
+     * gets the default interceptor-ref name. If this is not set on this PackageConfig, it searches the parent PackageConfigs in order until it finds one.
      */
     public String getFullDefaultInterceptorRef() {
         if ((defaultInterceptorRef == null) && !parents.isEmpty()) {
@@ -244,8 +240,7 @@ public class PackageConfig extends Located implements Comparable, Serializable, 
     }
 
     /**
-     * gets the default action-ref name. If this is not set on this PackageConfig, it searches the parent
-     * PackageConfigs in order until it finds one.
+     * gets the default action-ref name. If this is not set on this PackageConfig, it searches the parent PackageConfigs in order until it finds one.
      */
     public String getFullDefaultActionRef() {
         if ((defaultActionRef == null) && !parents.isEmpty()) {
@@ -263,8 +258,7 @@ public class PackageConfig extends Located implements Comparable, Serializable, 
     /**
      * Returns the default result type for this package.
      * <p/>
-     * If there is no default result type, but this package has parents - we will try to
-     * look up the default result type of a parent.
+     * If there is no default result type, but this package has parents - we will try to look up the default result type of a parent.
      */
     public String getFullDefaultResultType() {
         if ((defaultResultType == null) && !parents.isEmpty()) {
@@ -322,7 +316,6 @@ public class PackageConfig extends Located implements Comparable, Serializable, 
     public Map<String, ResultTypeConfig> getResultTypeConfigs() {
         return resultTypeConfigs;
     }
-
 
     public boolean isNeedsRefresh() {
         return needsRefresh;
@@ -390,7 +383,8 @@ public class PackageConfig extends Located implements Comparable, Serializable, 
             return false;
         }
 
-        if ((globalExceptionMappingConfigs != null) ? (!globalExceptionMappingConfigs.equals(packageConfig.globalExceptionMappingConfigs)) : (packageConfig.globalExceptionMappingConfigs != null)) {
+        if ((globalExceptionMappingConfigs != null) ? (!globalExceptionMappingConfigs.equals(packageConfig.globalExceptionMappingConfigs))
+                : (packageConfig.globalExceptionMappingConfigs != null)) {
             return false;
         }
 
@@ -434,9 +428,9 @@ public class PackageConfig extends Located implements Comparable, Serializable, 
     }
 
     /**
-     * The builder for this object.  An instance of this object is the only way to construct a new instance.  The
-     * purpose is to enforce the immutability of the object.  The methods are structured in a way to support chaining.
-     * After setting any values you need, call the {@link #build()} method to create the object.
+     * The builder for this object. An instance of this object is the only way to construct a new instance. The purpose is to enforce the immutability of the
+     * object. The methods are structured in a way to support chaining. After setting any values you need, call the {@link #build()} method to create the
+     * object.
      */
     public static class Builder implements InterceptorLocator {
 

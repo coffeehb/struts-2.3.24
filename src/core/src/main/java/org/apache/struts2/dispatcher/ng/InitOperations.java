@@ -45,6 +45,14 @@ public class InitOperations {
 
     /**
      * Initializes the internal Struts logging
+     * 
+     * shuliang: 2015/9/20: add loggerFactory parameter in filter configuration to specify 
+     *  a given logger factory.
+     *  
+     *  <init-param>
+     *      <param-name>loggerFactory</param-name>
+     *      <param-value>xxxxxx</param-value>
+     *  </init-param>
      */
     public void initLogging(HostConfig filterConfig) {
         String factoryName = filterConfig.getInitParameter("loggerFactory");
@@ -68,6 +76,10 @@ public class InitOperations {
 
     /**
      * Creates and initializes the dispatcher
+     * 
+     * shuliang: 2015/9/20
+     *  creates a Dispatcher object and call init method on it. 
+     *
      */
     public Dispatcher initDispatcher(HostConfig filterConfig) {
         Dispatcher dispatcher = createDispatcher(filterConfig);

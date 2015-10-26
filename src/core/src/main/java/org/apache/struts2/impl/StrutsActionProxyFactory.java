@@ -31,7 +31,7 @@ public class StrutsActionProxyFactory extends DefaultActionProxyFactory {
 
     @Override
     public ActionProxy createActionProxy(ActionInvocation inv, String namespace, String actionName, String methodName, boolean executeResult, boolean cleanupContext) {
-        
+
         StrutsActionProxy proxy = new StrutsActionProxy(inv, namespace, actionName, methodName, executeResult, cleanupContext);
         container.inject(proxy);
         proxy.prepare();

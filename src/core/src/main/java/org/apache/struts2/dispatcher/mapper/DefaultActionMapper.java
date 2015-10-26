@@ -47,38 +47,30 @@ import java.util.regex.Pattern;
 /**
  * <!-- START SNIPPET: javadoc -->
  * <p/>
- * Default action mapper implementation, using the standard *.[ext] (where ext
- * usually "action") pattern. The extension is looked up from the Struts
+ * Default action mapper implementation, using the standard *.[ext] (where ext usually "action") pattern. The extension is looked up from the Struts
  * configuration key <b>struts.action.extension</b>.
  * <p/>
- * <p/> To help with dealing with buttons and other related requirements, this
- * mapper (and other {@link ActionMapper}s, we hope) has the ability to name a
- * button with some predefined prefix and have that button name alter the
- * execution behaviour. The four prefixes are:
+ * <p/>
+ * To help with dealing with buttons and other related requirements, this mapper (and other {@link ActionMapper}s, we hope) has the ability to name a button
+ * with some predefined prefix and have that button name alter the execution behaviour. The four prefixes are:
  * <p/>
  * <ul>
  * <li>Method prefix - <i>method:default</i></li>
  * <li>Action prefix - <i>action:dashboard</i></li>
  * </ul>
  * <p/>
- * In addition to these four prefixes, this mapper also understands the
- * action naming pattern of <i>foo!bar</i> in either the extension form (eg:
- * foo!bar.action) or in the prefix form (eg: action:foo!bar). This syntax tells
- * this mapper to map to the action named <i>foo</i> and the method <i>bar</i>.
+ * In addition to these four prefixes, this mapper also understands the action naming pattern of <i>foo!bar</i> in either the extension form (eg:
+ * foo!bar.action) or in the prefix form (eg: action:foo!bar). This syntax tells this mapper to map to the action named <i>foo</i> and the method <i>bar</i>.
  * <p/>
- * <!-- END SNIPPET: javadoc -->
- * <b>Method Prefix</b>
- * <!-- START SNIPPET: method -->
+ * <!-- END SNIPPET: javadoc --> <b>Method Prefix</b> <!-- START SNIPPET: method -->
  * <p/>
- * With method-prefix, instead of calling baz action's execute() method (by
- * default if it isn't overriden in struts.xml to be something else), the baz
- * action's anotherMethod() will be called. A very elegant way determine which
- * button is clicked. Alternatively, one would have submit button set a
- * particular value on the action when clicked, and the execute() method decides
- * on what to do with the setted value depending on which button is clicked.
+ * With method-prefix, instead of calling baz action's execute() method (by default if it isn't overriden in struts.xml to be something else), the baz action's
+ * anotherMethod() will be called. A very elegant way determine which button is clicked. Alternatively, one would have submit button set a particular value on
+ * the action when clicked, and the execute() method decides on what to do with the setted value depending on which button is clicked.
  * <p/>
  * <!-- END SNIPPET: method -->
  * <p/>
+ * 
  * <pre>
  *  &lt;!-- START SNIPPET: method-example --&gt;
  *  &lt;s:form action=&quot;baz&quot;&gt;
@@ -88,16 +80,15 @@ import java.util.regex.Pattern;
  *  &lt;/s:form&gt;
  *  &lt;!-- END SNIPPET: method-example --&gt;
  * </pre>
- * <b>Action prefix</b>
- * <!-- START SNIPPET: action -->
+ * 
+ * <b>Action prefix</b> <!-- START SNIPPET: action -->
  * <p/>
- * With action-prefix, instead of executing baz action's execute() method (by
- * default if it isn't overriden in struts.xml to be something else), the
- * anotherAction action's execute() method (assuming again if it isn't overriden
- * with something else in struts.xml) will be executed.
+ * With action-prefix, instead of executing baz action's execute() method (by default if it isn't overriden in struts.xml to be something else), the
+ * anotherAction action's execute() method (assuming again if it isn't overriden with something else in struts.xml) will be executed.
  * <p/>
  * <!-- END SNIPPET: action -->
  * <p/>
+ * 
  * <pre>
  *  &lt;!-- START SNIPPET: action-example --&gt;
  *  &lt;s:form action=&quot;baz&quot;&gt;
@@ -123,10 +114,12 @@ public class DefaultActionMapper implements ActionMapper {
     private boolean allowActionPrefix = false;
     private boolean allowActionCrossNamespaceAccess = false;
 
-    protected List<String> extensions = new ArrayList<String>() {{
-        add("action");
-        add("");
-    }};
+    protected List<String> extensions = new ArrayList<String>() {
+        {
+            add("action");
+            add("");
+        }
+    };
 
     protected Container container;
 
@@ -174,10 +167,12 @@ public class DefaultActionMapper implements ActionMapper {
     }
 
     /**
-     * Adds a parameter action.  Should only be called during initialization
+     * Adds a parameter action. Should only be called during initialization
      *
-     * @param prefix          The string prefix to trigger the action
-     * @param parameterAction The parameter action to execute
+     * @param prefix
+     *            The string prefix to trigger the action
+     * @param parameterAction
+     *            The parameter action to execute
      * @since 2.1.0
      */
     protected void addParameterAction(String prefix, ParameterAction parameterAction) {
@@ -284,11 +279,12 @@ public class DefaultActionMapper implements ActionMapper {
     }
 
     /**
-     * Special parameters, as described in the class-level comment, are searched
-     * for and handled.
+     * Special parameters, as described in the class-level comment, are searched for and handled.
      *
-     * @param request The request
-     * @param mapping The action mapping
+     * @param request
+     *            The request
+     * @param mapping
+     *            The action mapping
      */
     public void handleSpecialParameters(HttpServletRequest request, ActionMapping mapping) {
         // handle special parameter prefixes.
@@ -317,8 +313,10 @@ public class DefaultActionMapper implements ActionMapper {
     /**
      * Parses the name and namespace from the uri
      *
-     * @param uri     The uri
-     * @param mapping The action mapping to populate
+     * @param uri
+     *            The uri
+     * @param mapping
+     *            The action mapping to populate
      */
     protected void parseNameAndNamespace(String uri, ActionMapping mapping, ConfigurationManager configManager) {
         String namespace, name;
@@ -377,7 +375,8 @@ public class DefaultActionMapper implements ActionMapper {
     /**
      * Cleans up action name from suspicious characters
      *
-     * @param rawActionName action name extracted from URI
+     * @param rawActionName
+     *            action name extracted from URI
      * @return safe action name
      */
     protected String cleanupActionName(final String rawActionName) {
@@ -402,7 +401,8 @@ public class DefaultActionMapper implements ActionMapper {
     /**
      * Drops the extension from the action name
      *
-     * @param name The action name
+     * @param name
+     *            The action name
      * @return The action name without its extension
      * @deprecated Since 2.1, use {@link #dropExtension(java.lang.String, org.apache.struts2.dispatcher.mapper.ActionMapping)} instead
      */
@@ -413,8 +413,10 @@ public class DefaultActionMapper implements ActionMapper {
     /**
      * Drops the extension from the action name, storing it in the mapping for later use
      *
-     * @param name    The action name
-     * @param mapping The action mapping to store the extension in
+     * @param name
+     *            The action name
+     * @param mapping
+     *            The action mapping to store the extension in
      * @return The action name without its extension
      */
     protected String dropExtension(String name, ActionMapping mapping) {
